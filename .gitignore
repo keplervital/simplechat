@@ -2,3 +2,4 @@
 *.jar
 *.war
 *.zip
+.helpers
