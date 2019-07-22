@@ -11,18 +11,21 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.validation.constraints.NotBlank;
+
 @Table("users")
 public class User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@PrimaryKeyColumn(name = "id", ordinal = 0, type = PrimaryKeyType.CLUSTERED)
+	@PrimaryKeyColumn(name = "id", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
     private UUID id = UUIDs.timeBased();
     
 	@PrimaryKeyColumn(name = "access_key", ordinal = 1, type = PrimaryKeyType.PARTITIONED)
-	private String accessKey;
+	private String accessKey = UUIDs.timeBased().toString().replaceAll("-", "");
 	
 	@Column
+	@NotBlank(message = "Name is required")
 	private String name;
 	
 	@Column
