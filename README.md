@@ -13,8 +13,9 @@
 
 ### Prerequisites
 
-* NodeJS
 * Docker
-* RabbitMQ
-* Cassandra
 * Java
+* Cassandra
+* NodeJS
+* RabbitMQ
+* Redis
