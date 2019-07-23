@@ -21,7 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.datastax.driver.core.utils.UUIDs;
+import com.huonix.simplechat.models.UserByApiKey;
+import com.huonix.simplechat.models.UserByName;
 import com.huonix.simplechat.models.User;
+import com.huonix.simplechat.repositories.UserByApiKeyRepository;
+import com.huonix.simplechat.repositories.UserByNameRepository;
 import com.huonix.simplechat.repositories.UserRepository;
 
 @RestController
@@ -30,6 +34,12 @@ public class UserController {
 	
 	@Autowired
     private UserRepository userRepository;
+	
+	@Autowired
+	private UserByApiKeyRepository userByApiKeyRepository;
+	
+	@Autowired
+	private UserByNameRepository userByNameRepository;
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -53,11 +63,35 @@ public class UserController {
     @ResponseBody
     public Map<String, String> create(@Valid @RequestBody User user) {
 		HashMap<String, String> response = new HashMap<>();
-        user.setId(UUIDs.timeBased());
-		user.setDateAdded(new Date());
-        user = userRepository.save(user);
-        response.put("id", user.getId().toString());
-        response.put("accessKey", user.getAccessKey());
+		try {
+			Optional<UserByName> chatUser = userByNameRepository.findByName(user.getName());
+			if(chatUser.isPresent()) {
+				throw new Exception("The name especified already exists.");
+			}
+			user.setId(UUIDs.timeBased());
+			user.setDateAdded(new Date());
+	        user = userRepository.save(user);
+	        
+	        userByApiKeyRepository.save(new UserByApiKey(user.getAccessKey(), user.getId()));
+	        userByNameRepository.save(new UserByName(user.getName(), user.getId()));
+	        
+	        response.put("id", user.getId().toString());
+	        response.put("accessKey", user.getAccessKey());
+	    } catch(Exception e) {
+	    	response.put("error", e.getMessage());
+	    }
+        return response;
+    }
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public Map<String, String> update(@PathVariable("id") User user) {
+		HashMap<String, String> response = new HashMap<>();
+		try {
+			// TODO
+	    } catch(Exception e) {
+	    	response.put("error", e.getMessage());
+	    }
         return response;
     }
 	
@@ -67,11 +101,20 @@ public class UserController {
 		HashMap<String, String> response = new HashMap<>();
 		Optional<User> optional = userRepository.findById(id);
 		if(!optional.isPresent()) {
-			response.put("error", "user not found.");
+			response.put("error", "User not found.");
 			return response;
 		} 
-		userRepository.deleteById(optional.get());
-		response.put("message", "user successfully removed.");
+		User user = optional.get();		
+		Optional<UserByApiKey> userByApiKey = userByApiKeyRepository.findByKey(user.getAccessKey());
+		Optional<UserByName> userByName = userByNameRepository.findByName(user.getName());
+		if(userByApiKey.isPresent()) {
+			userByApiKeyRepository.delete(userByApiKey.get());
+		}
+		if(userByName.isPresent()) {
+			userByNameRepository.delete(userByName.get());
+		}
+		userRepository.delete(user);
+		response.put("message", "User successfully removed.");
         return response;
     }
 
