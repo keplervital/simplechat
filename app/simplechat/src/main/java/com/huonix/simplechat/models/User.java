@@ -15,48 +15,48 @@ import javax.validation.constraints.NotBlank;
 
 @Table("users")
 public class User implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@PrimaryKeyColumn(name = "id", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
-    private UUID id = UUIDs.timeBased();
-    
-	@PrimaryKeyColumn(name = "access_key", ordinal = 1, type = PrimaryKeyType.PARTITIONED)
+	private UUID id = UUIDs.timeBased();
+
+	@PrimaryKeyColumn(name = "access_key", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
 	private String accessKey = UUIDs.timeBased().toString().replaceAll("-", "");
-	
-	@Column
+
+	@PrimaryKeyColumn(name = "name", ordinal = 2, type = PrimaryKeyType.CLUSTERED)
 	@NotBlank(message = "Name is required")
 	private String name;
-	
+
 	@Column
-    private String avatar;
-    
+	private String avatar;
+
 	@Column
 	private String mood;
-    
+
 	@Column
 	private Boolean blocked;
-	
+
 	@Column
 	private Boolean admin;
-	
+
 	@Column
 	private Date date_added;
 
 	@Column
 	private Date date_modified;
-    
+
 	/**
 	 * 
 	 * @param id
 	 * @param admin
 	 * @param name
 	 */
-    public User(final UUID id, final Boolean admin, final String name) {
-        this.id = id;
-        this.admin = admin;
-        this.name = name;
-    }
+	public User(final UUID id, final Boolean admin, final String name) {
+		this.id = id;
+		this.admin = admin;
+		this.name = name;
+	}
 
 	/**
 	 * @return the id
@@ -182,6 +182,43 @@ public class User implements Serializable {
 	 */
 	public void setDateModified(Date dateModified) {
 		this.date_modified = dateModified;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((accessKey == null) ? 0 : accessKey.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		} else if (obj == null) {
+			return false;
+		} else if (getClass() != obj.getClass()) {
+			return false;
+		}
+		User other = (User) obj;
+		if (name == null)
+		{
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (id == null)
+		{
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		return true;
 	}
 
 }
