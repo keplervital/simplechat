@@ -8,14 +8,21 @@ import org.springframework.stereotype.Repository;
 
 import com.huonix.simplechat.models.User;
 
+/**
+ * User persistency repository
+ * 
+ * @author Kepler Vital
+ *
+ */
 @Repository
 public interface UserRepository extends CassandraRepository<User, User> {
-
-	//@Query("select * from users where name = ?0")
-	Optional<User> findByName(String name);
 	
-	//@Query(allowFiltering = true)
-	//@Query("select * from users where id = ?0")
+	/**
+	 * Find the user by the id
+	 * 
+	 * @param id must not be {@literal null}
+	 * @return Optional<User>
+	 */
 	Optional<User> findById(UUID id);
 	
 }
