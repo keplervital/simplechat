@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.datastax.driver.core.utils.UUIDs;
+import com.huonix.simplechat.exceptions.UserNameNotUniqueException;
+import com.huonix.simplechat.exceptions.UserNotFoundException;
 import com.huonix.simplechat.helpers.ErrorHandler;
 import com.huonix.simplechat.models.User;
 import com.huonix.simplechat.models.UserByApiKey;
@@ -57,7 +59,7 @@ public class UserService extends ErrorHandler implements IUserService {
 			this.clearErrors();
 			Optional<UserByName> chatUser = userByNameRepository.findByName(user.getName());
 			if(chatUser.isPresent()) {
-				throw new Exception("The name especified already exists.");
+				throw new UserNameNotUniqueException("The name especified already exists.");
 			}
 			user.setId(UUIDs.timeBased());
 			user.setDateAdded(new Date());
@@ -86,12 +88,12 @@ public class UserService extends ErrorHandler implements IUserService {
 			this.clearErrors();
 			Optional<User> opUser = userRepository.findById(id);
 			if(!opUser.isPresent()) {
-				throw new Exception("User not found.");
+				throw new UserNotFoundException("User not found.");
 			}
 			user = opUser.get();
 			Optional<UserByName> chatUser = userByNameRepository.findByName(newData.getName());
 			if(chatUser.isPresent() && !chatUser.get().getUserId().equals(id)) {
-				throw new Exception("The name especified already exists.");
+				throw new UserNameNotUniqueException("The name especified already exists.");
 			}			
 			if(!newData.getName().isEmpty() && !user.getName().equals(newData.getName())) {
 				userByNameRepository.deleteById(new UserByName(user.getName(), user.getId()));
@@ -156,7 +158,7 @@ public class UserService extends ErrorHandler implements IUserService {
 			this.clearErrors();
 			Optional<User> optional = userRepository.findById(id);
 			if(!optional.isPresent()) {
-				throw new Exception("User not found.");
+				throw new UserNotFoundException("User not found.");
 			} 
 			User user = optional.get();		
 			Optional<UserByApiKey> userByApiKey = userByApiKeyRepository.findByKey(user.getAccessKey());
