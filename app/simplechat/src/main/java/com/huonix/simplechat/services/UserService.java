@@ -123,21 +123,16 @@ public class UserService extends ErrorHandler implements IUserService {
 	 */
 	@Override
 	public boolean delete(User user) {
-		try {
-			this.clearErrors();
-			Optional<UserByApiKey> userByApiKey = userByApiKeyRepository.findByKey(user.getAccessKey());
-			Optional<UserByName> userByName = userByNameRepository.findByName(user.getName());
-			if(userByApiKey.isPresent()) {
-				userByApiKeyRepository.delete(userByApiKey.get());
-			}
-			if(userByName.isPresent()) {
-				userByNameRepository.delete(userByName.get());
-			}
-			userRepository.delete(user);
-		} catch(Exception e) {
-			this.addError(e.getMessage());
-			return false;
+		this.clearErrors();
+		Optional<UserByApiKey> userByApiKey = userByApiKeyRepository.findByKey(user.getAccessKey());
+		Optional<UserByName> userByName = userByNameRepository.findByName(user.getName());
+		if(userByApiKey.isPresent()) {
+			userByApiKeyRepository.delete(userByApiKey.get());
 		}
+		if(userByName.isPresent()) {
+			userByNameRepository.delete(userByName.get());
+		}
+		userRepository.delete(user);
 		return true;
 	}
 
