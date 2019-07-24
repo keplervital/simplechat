@@ -9,6 +9,12 @@ import org.springframework.data.cassandra.core.mapping.Table;
 
 import com.datastax.driver.core.utils.UUIDs;
 
+/**
+ * UserByApiKey entity
+ * 
+ * @author Kepler Vital
+ *
+ */
 @Table("users_by_api_keys")
 public class UserByApiKey implements Serializable {
 	
@@ -20,34 +26,50 @@ public class UserByApiKey implements Serializable {
 	@PrimaryKeyColumn(name = "user_id", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
 	private UUID userId;
 	
+	/**
+	 * User must have all params
+	 * 
+	 * @param key the api key
+	 * @param userId the user id
+	 */
 	public UserByApiKey(final String key, final UUID userId) {
 		this.key = key;
 		this.userId = userId;
 	}
 
 	/**
-	 * @return the key
+	 * Gets the api key
+	 * 
+	 * @return String the key
 	 */
 	public String getKey() {
 		return key;
 	}
 
 	/**
-	 * @return the userId
+	 * Gets the user id
+	 * 
+	 * @return UUID the userId
 	 */
 	public UUID getUserId() {
 		return userId;
 	}
 
 	/**
+	 * Sets the api key
+	 * 
 	 * @param key the key to set
+	 * @return void
 	 */
 	public void setKey(String key) {
 		this.key = key;
 	}
 
 	/**
+	 * Sets the user id
+	 * 
 	 * @param userId the userId to set
+	 * @return void
 	 */
 	public void setUserId(UUID userId) {
 		this.userId = userId;

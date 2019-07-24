@@ -7,6 +7,12 @@ import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 
+/**
+ * UserByName entitiy
+ * 
+ * @author Kepler Vital
+ *
+ */
 @Table("users_by_name")
 public class UserByName implements Serializable {
 	
@@ -14,10 +20,16 @@ public class UserByName implements Serializable {
 
 	@PrimaryKeyColumn(name = "name", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
 	private String name;
-
+	
 	@PrimaryKeyColumn(name = "user_id", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
 	private UUID userId;
 
+	/**
+	 * User must have all params
+	 * 
+	 * @param name the user name
+	 * @param userId the user id
+	 */
 	public UserByName(String name, UUID userId) {
 		super();
 		this.name = name;
@@ -25,28 +37,38 @@ public class UserByName implements Serializable {
 	}
 
 	/**
-	 * @return the name
+	 * Get the user name
+	 * 
+	 * @return String the name
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @return the userId
+	 * Gets the user id
+	 * 
+	 * @return UUID with the userId
 	 */
 	public UUID getUserId() {
 		return userId;
 	}
 
 	/**
+	 * Sets a new user name
+	 * 
 	 * @param name the name to set
+	 * @return void
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
+	 * Sets a new user id
+	 * 
 	 * @param userId the userId to set
+	 * @return void
 	 */
 	public void setUserId(UUID userId) {
 		this.userId = userId;
