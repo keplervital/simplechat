@@ -1,5 +1,8 @@
 package com.huonix.simplechat.configs;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.cassandra.config.CassandraClusterFactoryBean;
 import org.springframework.data.cassandra.config.SchemaAction;
+import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecification;
+import org.springframework.data.cassandra.core.cql.keyspace.KeyspaceOption;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 
@@ -44,7 +49,20 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
 	
 	@Override
     public SchemaAction getSchemaAction() {
-        return SchemaAction.RECREATE_DROP_UNUSED;
+        return SchemaAction.CREATE_IF_NOT_EXISTS;
+    }
+	
+	/*
+     * Automatically creates a Keyspace if it doesn't exist
+     */
+    @Override
+    protected List<CreateKeyspaceSpecification> getKeyspaceCreations() {
+        CreateKeyspaceSpecification specification = CreateKeyspaceSpecification
+                .createKeyspace(this.getKeyspaceName())
+                .ifNotExists()
+                .with(KeyspaceOption.DURABLE_WRITES, true)
+                .withSimpleReplication();
+        return Arrays.asList(specification);
     }
 	
 	@Override
@@ -59,6 +77,7 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
 		cluster.setJmxReportingEnabled(false);
 		cluster.setContactPoints(this.getContactPoints());
 		cluster.setPort(this.getPort());
+		cluster.setKeyspaceCreations(getKeyspaceCreations());
 		LOGGER.info("Cluster created with contact points [" + this.getContactPoints() + "] " + "& port [" + this.getPort() + "].");
 		return cluster;
 	}
