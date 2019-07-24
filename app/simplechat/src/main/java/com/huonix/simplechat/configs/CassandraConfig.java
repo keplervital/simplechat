@@ -12,6 +12,11 @@ import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 
+/**
+ * 
+ * @author Kepler Vital
+ *
+ */
 @Configuration
 @PropertySource(value = { "classpath:application.properties" })
 @EnableCassandraRepositories(basePackages = "com.huonix.simplechat.repositories")
