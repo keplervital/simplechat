@@ -52,6 +52,16 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path-assert</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-core</artifactId>
 		</dependency>
@@ -105,8 +115,9 @@
 							</rules>
 							<excludes>
 								<exclude>com/huonix/simplechat/Application.*</exclude>
-				                <exclude>com/huonix/simplechat/configs/CassandraConfig.*</exclude>
-				            </excludes>
+								<exclude>com/huonix/simplechat/configs/CassandraConfig.*</exclude>
+								<exclude>com/huonix/simplechat/controllers/*</exclude>
+							</excludes>
 						</configuration>
 					</execution>
 				</executions>
