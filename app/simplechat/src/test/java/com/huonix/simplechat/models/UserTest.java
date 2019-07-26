@@ -90,6 +90,14 @@ public class UserTest {
     }
 	
 	@Test
+    public void testUserHashCodeNotEqualNullId() {
+		User u1 = new User(UUIDs.timeBased(), true, "John Doe");
+		User u2 = new User(UUIDs.timeBased(), true, "John Doe");
+		u1.setId(null);
+		assertNotEquals("The users hashcode provided must not be equal", u1.hashCode(), u2.hashCode());
+    }
+	
+	@Test
     public void testDateAddedIsNull() {
 		User u1 = new User(UUIDs.timeBased(), true, "John Doe");
 		assertEquals("The user date added must be null", null, u1.getDateAdded());
