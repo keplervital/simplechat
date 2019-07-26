@@ -3,11 +3,14 @@ package com.huonix.simplechat.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 /**
  * Interface for generic operations on a repository for a specific type.
  *
  * @author Kepler Vital
  */
+@Service
 public interface IService<T, ID> {
 		
 	/**
