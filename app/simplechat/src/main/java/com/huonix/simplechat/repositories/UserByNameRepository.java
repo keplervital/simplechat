@@ -3,6 +3,7 @@ package com.huonix.simplechat.repositories;
 import java.util.Optional;
 
 import org.springframework.data.cassandra.repository.CassandraRepository;
+import org.springframework.stereotype.Repository;
 
 import com.huonix.simplechat.models.UserByName;
 
@@ -12,6 +13,7 @@ import com.huonix.simplechat.models.UserByName;
  * @author Kepler Vital
  *
  */
+@Repository
 public interface UserByNameRepository extends CassandraRepository<UserByName, UserByName> {
 	
 	/**

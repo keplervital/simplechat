@@ -2,6 +2,8 @@ package com.huonix.simplechat.services;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import com.huonix.simplechat.models.User;
 
 /**
@@ -10,6 +12,7 @@ import com.huonix.simplechat.models.User;
  * @author Kepler Vital
  *
  */
+@Service
 public interface IUserService extends IService<User, UUID> {
 	
 }
