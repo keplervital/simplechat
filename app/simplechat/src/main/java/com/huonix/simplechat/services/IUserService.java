@@ -14,5 +14,13 @@ import com.huonix.simplechat.models.User;
  */
 @Service
 public interface IUserService extends IService<User, UUID> {
+
+	/**
+	 * Finds the user by it's api key
+	 * 
+	 * @param apiKey the api key
+	 * @return User
+	 */
+	User getByApiKey(String apiKey);
 	
 }
