@@ -172,4 +172,16 @@ public class UserService extends ErrorHandler implements IUserService {
 		return true;
 	}
 
+	@Override
+	public User getByApiKey(String apiKey) {
+		Optional<UserByApiKey> userByApiKey = userByApiKeyRepository.findByKey(apiKey);
+		if(userByApiKey.isPresent()) {
+			Optional<User> user = this.getById(userByApiKey.get().getUserId());
+			if(user.isPresent()) {
+				return user.get();
+			}
+		}
+		return null;
+	}
+
 }

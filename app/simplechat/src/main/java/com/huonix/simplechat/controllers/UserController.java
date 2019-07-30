@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.huonix.simplechat.annotations.AllowAccess;
+import com.huonix.simplechat.enums.ERole;
 import com.huonix.simplechat.models.User;
 import com.huonix.simplechat.services.UserService;
 
@@ -37,6 +39,7 @@ public class UserController {
 	 * 
 	 * @return a list of all users
 	 */
+	@AllowAccess(roles = {ERole.ADMIN})
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<User>> list() {
@@ -65,6 +68,7 @@ public class UserController {
 	 * @param user the user data
 	 * @return the new generated user id and api key to access the system
 	 */
+	@AllowAccess(roles = {ERole.ADMIN})
 	@RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> create(@RequestBody User user) {
@@ -86,6 +90,7 @@ public class UserController {
 	 * @param user the user data
 	 * @return the user id and api key to access the system
 	 */
+	@AllowAccess(roles = {ERole.ADMIN})
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> update(@PathVariable("id") UUID id, @RequestBody User user) {
@@ -106,6 +111,7 @@ public class UserController {
 	 * @param id the user id
 	 * @return message if the user was successfully deleted
 	 */
+	@AllowAccess(roles = {ERole.ADMIN})
 	@RequestMapping(value = "/delete/id/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> delete(@PathVariable("id") UUID id) {
