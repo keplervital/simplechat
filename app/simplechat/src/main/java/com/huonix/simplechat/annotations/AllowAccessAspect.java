@@ -1,7 +1,6 @@
 package com.huonix.simplechat.annotations;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
@@ -10,15 +9,13 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.huonix.simplechat.enums.ERole;
 import com.huonix.simplechat.exceptions.UnauthorizedAccessException;
+import com.huonix.simplechat.helpers.AuthHelper;
 
 /**
  * The Allow Access annotation responsible to check user access
@@ -44,11 +41,7 @@ public class AllowAccessAspect {
 	public Object validate(ProceedingJoinPoint point, AllowAccess allowAccess) throws Throwable {
 		try {
 			boolean hasAccess = false;
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			Set<String> userAuthorities = new HashSet<>();
-			for(Object authority : auth.getAuthorities()) {
-				userAuthorities.add(((GrantedAuthority)authority).getAuthority());
-			}
+			Set<String> userAuthorities = AuthHelper.userAuthorities();
 			ERole[] roles = allowAccess.roles();
 			for(ERole role : roles) {
 				if(userAuthorities.contains(role.toString())) {
