@@ -61,6 +61,9 @@ public class UserService extends ErrorHandler implements IUserService {
 			if(chatUser.isPresent()) {
 				throw new UserNameNotUniqueException("The name especified already exists.");
 			}
+			if(user.getBlocked() == null) {
+				user.setBlocked(false);
+			}
 			user.setId(UUIDs.timeBased());
 			user.setDateAdded(new Date());
 			user = userRepository.save(user);
@@ -100,11 +103,14 @@ public class UserService extends ErrorHandler implements IUserService {
 				userByNameRepository.save(new UserByName(newData.getName(), user.getId()));
 				userRepository.delete(user);
 			}
-			user.setName(newData.getName());
 			user.setMood(newData.getMood());
 			user.setAvatar(newData.getAvatar());
-			user.setBlocked(newData.getBlocked());
-			user.setAdmin(newData.getAdmin());
+			if(newData.getName() != null)
+				user.setName(newData.getName());
+			if(newData.getBlocked() != null)
+				user.setBlocked(newData.getBlocked());
+			if(newData.getAdmin() != null)
+				user.setAdmin(newData.getAdmin());
 			user.setDateModified(new Date());
 			user = userRepository.save(user);
 	    } catch(Exception e) {
