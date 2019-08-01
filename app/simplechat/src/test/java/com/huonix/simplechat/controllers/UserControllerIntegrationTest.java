@@ -135,7 +135,7 @@ public class UserControllerIntegrationTest {
 	
 	@Test
 	public void deleteUserById_Ok() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.delete("/user/delete/id/" + this.user.getId())
+		mvc.perform(MockMvcRequestBuilders.delete("/user/" + this.user.getId())
 			.header(apiKeyHeader, this.user.getAccessKey())
 		    .contentType(MediaType.APPLICATION_JSON))
 			.andExpect(MockMvcResultMatchers.status().isOk())
@@ -145,12 +145,22 @@ public class UserControllerIntegrationTest {
 	
 	@Test
 	public void deleteUserByIdNotFound_thenErrorMessages() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.delete("/user/delete/id/" + UUIDs.timeBased())
+		mvc.perform(MockMvcRequestBuilders.delete("/user/" + UUIDs.timeBased())
 			.header(apiKeyHeader, this.user.getAccessKey())
 		    .contentType(MediaType.APPLICATION_JSON))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$.errors.length()", greaterThan(0)));
+	}
+	
+	@Test
+	public void getAuthenticatedUser_Ok() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.get("/user/me")
+			.header(apiKeyHeader, this.user.getAccessKey())
+		    .contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.id", is(this.user.getId().toString())));
 	}
 	
 }
