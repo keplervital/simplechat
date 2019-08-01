@@ -21,7 +21,7 @@ import com.huonix.simplechat.services.UserService;
  */
 @Component
 @PropertySource(value = { "classpath:application.properties" })
-public class DefaultUserOnStartup {
+public class ApplicationFirstStartup {
 
 	@Autowired
 	private Environment environment;
@@ -29,10 +29,10 @@ public class DefaultUserOnStartup {
 	@Autowired
 	private UserService userService;
 	
-	private static final Log LOGGER = LogFactory.getLog(DefaultUserOnStartup.class);
+	private static final Log LOGGER = LogFactory.getLog(ApplicationFirstStartup.class);
 	 
     @PostConstruct
-    private void init() {
+    public void init() {
     	LOGGER.info("##############################################");
     	LOGGER.info("# APPLICATION INITIALIZATION LOGIC");
         if(userService.count() == 0) {
