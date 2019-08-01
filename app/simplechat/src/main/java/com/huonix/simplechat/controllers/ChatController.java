@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.huonix.simplechat.exceptions.ChatCreationErrorException;
-import com.huonix.simplechat.exceptions.ChatLeaveException;
 import com.huonix.simplechat.models.Chat;
 import com.huonix.simplechat.models.Message;
 import com.huonix.simplechat.services.ChatService;
@@ -140,9 +139,7 @@ public class ChatController {
     public ResponseEntity<Map<String, Object>> removeParticipant(@PathVariable("id") UUID chatId) {
 		Map<String, Object> response = new HashMap<>();
 		try {
-			if(!chatService.leaveChat(chatId)) {
-				throw new ChatLeaveException("Can't leave chat.");
-			}
+			chatService.leaveChat(chatId);
 			response.put("success", true);
 			response.put("message", "Exited the chat successfully.");
 		} catch(Exception e) {
