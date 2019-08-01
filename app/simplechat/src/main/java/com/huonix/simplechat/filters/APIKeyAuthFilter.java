@@ -58,11 +58,11 @@ public class APIKeyAuthFilter extends GenericFilterBean {
 			String apiKey = getApiKey((HttpServletRequest) request);
 			if(apiKey != null) {
 				if(apiKey.isEmpty()) {
-					throw new MissingAuthenticationHeadersException();
+					throw new MissingAuthenticationHeadersException("Missing '" + principalRequestHeader + "' header.");
 				}
 				User user = userService.getByApiKey(apiKey);
 				if(user == null) {
-					throw new UserNotFoundException();
+					throw new UserNotFoundException("API Key not found.");
 				}
 				Set<GrantedAuthority> authorities = new HashSet<>();
 				authorities.add(new SimpleGrantedAuthority(ERole.DEFAULT.toString()));
@@ -77,8 +77,12 @@ public class APIKeyAuthFilter extends GenericFilterBean {
 			} else {
 				chain.doFilter(request, response);
 			}
+		} catch(MissingAuthenticationHeadersException e) {
+			changeResponseToUnauthorized(response, e.getMessage());
+		} catch(UserNotFoundException e) {
+			changeResponseToUnauthorized(response, e.getMessage());
 		} catch(Exception e) {
-			changeResponseToUnauthorized(response);
+			changeResponseToUnauthorized(response, e.getMessage());
 		}
 	}
 	
@@ -88,10 +92,10 @@ public class APIKeyAuthFilter extends GenericFilterBean {
 	 * @param response
 	 * @throws IOException
 	 */
-	private void changeResponseToUnauthorized(ServletResponse response) throws IOException {
+	private void changeResponseToUnauthorized(ServletResponse response, String message) throws IOException {
 		((HttpServletResponse) response).setContentType(MediaType.APPLICATION_JSON_VALUE);
 		((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		((HttpServletResponse) response).getOutputStream().println("{ \"error\": \"UNAUTHORIZED\" }");
+		((HttpServletResponse) response).getOutputStream().println("{ \"error\": \"UNAUTHORIZED\", \"message\": \""+message+"\" }");
 	}
 	
 }

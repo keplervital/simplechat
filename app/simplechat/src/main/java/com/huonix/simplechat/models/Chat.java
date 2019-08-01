@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
@@ -21,6 +23,8 @@ import com.datastax.driver.core.utils.UUIDs;
 @Table("chats")
 public class Chat implements Serializable {
 
+	public static final String DIRECT_CHAT = "direct";
+	
 	private static final long serialVersionUID = 1L;
 
 	@PrimaryKeyColumn(name = "id", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
@@ -30,9 +34,11 @@ public class Chat implements Serializable {
 	private Boolean isGroup;
 	
 	@Column(value="name")
+	@NotNull
 	private String name;
 	
 	@Column(value="participants")
+	@NotNull
 	private Set<UUID> participants;
 	
 	@Column(value="date_added")

@@ -25,4 +25,12 @@ public interface ChatMessageRepository extends CassandraRepository<ChatMessage, 
 	 */
 	List<ChatMessage> findAllByChatID(UUID chatId);
 	
+	/**
+	 * Delete all messages of chat
+	 * 
+	 * @param chatId must not be null {@literal null}
+	 * @return void
+	 */
+	void deleteByChatID(UUID chatId);
+	
 }
