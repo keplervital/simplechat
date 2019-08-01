@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.huonix.simplechat.annotations.AllowAccess;
 import com.huonix.simplechat.enums.ERole;
+import com.huonix.simplechat.helpers.AuthHelper;
 import com.huonix.simplechat.models.User;
 import com.huonix.simplechat.services.UserService;
 
@@ -35,6 +36,17 @@ public class UserController {
 	private UserService userService;
 	
 	/**
+	 * Retrieves the authenticated user
+	 * 
+	 * @return the user data
+	 */
+	@RequestMapping(value = "/me", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<User> me() {
+        return new ResponseEntity<User>(AuthHelper.user(), HttpStatus.OK);
+    }
+	
+	/**
 	 * Retrieves all users
 	 * 
 	 * @return a list of all users
@@ -43,7 +55,7 @@ public class UserController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<User>> list() {
-        return new ResponseEntity<List<User>>(userService.findAll(), HttpStatus.OK);
+		return new ResponseEntity<List<User>>(userService.findAll(), HttpStatus.OK);
     }
 	
 	/**
@@ -52,13 +64,14 @@ public class UserController {
 	 * @param id the user id
 	 * @return the user data
 	 */
+	@AllowAccess(roles = {ERole.ADMIN})
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<User> get(@PathVariable("id") UUID id) {
 		Optional<User> optional = userService.getById(id);
 		if(!optional.isPresent()) {
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-		} 
+		}
         return new ResponseEntity<User>(optional.get(), HttpStatus.OK);
     }
 	
@@ -112,7 +125,7 @@ public class UserController {
 	 * @return message if the user was successfully deleted
 	 */
 	@AllowAccess(roles = {ERole.ADMIN})
-	@RequestMapping(value = "/delete/id/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> delete(@PathVariable("id") UUID id) {
 		HashMap<String, Object> response = new HashMap<>();

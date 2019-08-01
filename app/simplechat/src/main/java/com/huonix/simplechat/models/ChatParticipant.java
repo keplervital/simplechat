@@ -26,9 +26,6 @@ public class ChatParticipant implements Serializable {
 	@PrimaryKeyColumn(name = "chat_id", ordinal = 1, type = PrimaryKeyType.CLUSTERED)
 	private UUID chatID;
 	
-	@PrimaryKeyColumn(name = "removed", ordinal = 2, type = PrimaryKeyType.CLUSTERED)
-	private Boolean removed;
-	
 	@PrimaryKeyColumn(name = "date_added", ordinal = 3, type = PrimaryKeyType.CLUSTERED)
 	private Date dateAdded;
 
@@ -39,11 +36,10 @@ public class ChatParticipant implements Serializable {
 	 * @param chatID the chat id
 	 * @param removed if the user is out of the chat
 	 */
-	public ChatParticipant(UUID userID, UUID chatID, Boolean removed) {
+	public ChatParticipant(UUID userID, UUID chatID) {
 		super();
 		this.userID = userID;
 		this.chatID = chatID;
-		this.removed = removed;
 	}
 
 	/**
@@ -62,15 +58,6 @@ public class ChatParticipant implements Serializable {
 	 */
 	public UUID getChatID() {
 		return chatID;
-	}
-
-	/**
-	 * Gets if the user is out of the chat
-	 * 
-	 * @return the removed
-	 */
-	public Boolean getRemoved() {
-		return removed;
 	}
 
 	/**
@@ -98,15 +85,6 @@ public class ChatParticipant implements Serializable {
 	 */
 	public void setChatID(UUID chatID) {
 		this.chatID = chatID;
-	}
-
-	/**
-	 * Sets if the user is out of the chat
-	 * 
-	 * @param removed the removed to set
-	 */
-	public void setRemoved(Boolean removed) {
-		this.removed = removed;
 	}
 
 	/**

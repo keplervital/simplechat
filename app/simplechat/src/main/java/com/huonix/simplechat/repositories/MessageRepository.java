@@ -25,4 +25,12 @@ public interface MessageRepository extends CassandraRepository<Message, Message>
 	 */
 	Optional<Message> findById(UUID messageId);
 	
+	/**
+	 * Delete the message by the id
+	 * 
+	 * @param messageId must not be null {@literal null}
+	 * @return void
+	 */
+	void deleteById(UUID messageId);
+	
 }

@@ -1,6 +1,7 @@
 package com.huonix.simplechat.repositories;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.cassandra.repository.CassandraRepository;
@@ -24,5 +25,14 @@ public interface ChatParticipantRepository extends CassandraRepository<ChatParti
 	 * @return List<ChatParticipant> the chat
 	 */
 	List<ChatParticipant> findAllByUserID(UUID userId);
+	
+	/**
+	 * Find a chat of user
+	 * 
+	 * @param userId must not be null {@literal null}
+	 * @param chatId must not be null {@literal null}
+	 * @return Optional<ChatParticipant> the chat
+	 */
+	Optional<ChatParticipant> findByUserIDAndChatID(UUID userId, UUID chatId);
 	
 }
