@@ -2,10 +2,10 @@ package com.huonix.simplechat.controllers;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -69,7 +69,6 @@ public class UserControllerIntegrationTest {
 	
 	@Before
     public void setupMockMvc() throws NamingException {
-		MockitoAnnotations.initMocks(this);
         this.mvc = MockMvcBuilders
 	        		.webAppContextSetup(webApplicationContext)
 	        		.apply(springSecurity())
@@ -163,4 +162,61 @@ public class UserControllerIntegrationTest {
 			.andExpect(jsonPath("$.id", is(this.user.getId().toString())));
 	}
 	
+	@Test
+	public void updateUser_Ok() throws Exception {
+		JSONObject jsonData = new JSONObject();
+		jsonData.put("name", "root");
+		mvc.perform(MockMvcRequestBuilders.put("/user/" + this.user.getId())
+			.header(apiKeyHeader, this.user.getAccessKey())
+			.content(jsonData.toString())
+		    .contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.id", is(this.user.getId().toString())));
+	}
+	
+	@Test
+	public void updateUser_NotOk() throws Exception {
+		String newName = "Mike";
+		userService.add(new User(UUIDs.timeBased(), true, newName));
+		JSONObject jsonData = new JSONObject();
+		jsonData.put("name", newName);
+		mvc.perform(MockMvcRequestBuilders.put("/user/" + this.user.getId())
+			.header(apiKeyHeader, this.user.getAccessKey())
+			.content(jsonData.toString())
+		    .contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.errors.length()", greaterThan(0)));
+	}
+	
+	@Test
+	public void createUser_Ok() throws Exception {
+		JSONObject jsonData = new JSONObject();
+		jsonData.put("name", "admin");
+		jsonData.put("admin", true);
+		jsonData.put("mood", "Just testing!");
+		mvc.perform(MockMvcRequestBuilders.post("/user")
+			.header(apiKeyHeader, this.user.getAccessKey())
+			.content(jsonData.toString())
+		    .contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.id").exists());
+	}
+	
+	@Test
+	public void createUser_NotOk() throws Exception {
+		JSONObject jsonData = new JSONObject();
+		jsonData.put("name", "John Doe");
+		jsonData.put("admin", true);
+		jsonData.put("mood", "Just testing!");
+		mvc.perform(MockMvcRequestBuilders.post("/user")
+			.header(apiKeyHeader, this.user.getAccessKey())
+			.content(jsonData.toString())
+		    .contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andExpect(jsonPath("$.errors.length()", greaterThan(0)));
+	}
 }
