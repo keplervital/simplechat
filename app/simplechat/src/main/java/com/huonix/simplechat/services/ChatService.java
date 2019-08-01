@@ -3,9 +3,11 @@ package com.huonix.simplechat.services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -29,6 +31,7 @@ import com.huonix.simplechat.repositories.ChatMessageRepository;
 import com.huonix.simplechat.repositories.ChatParticipantRepository;
 import com.huonix.simplechat.repositories.ChatRepository;
 import com.huonix.simplechat.repositories.MessageRepository;
+import com.huonix.simplechat.repositories.UserRepository;
 
 /**
  * Service handler for all chat business logic
@@ -50,6 +53,9 @@ public class ChatService extends ErrorHandler implements IChatService {
 	
 	@Autowired
 	private MessageRepository messageRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	/**
 	 * Finds all of the user chats
@@ -307,6 +313,80 @@ public class ChatService extends ErrorHandler implements IChatService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public List<Chat> directChats() {
+		User me = AuthHelper.user();
+		List<ChatParticipant> allMyChats = chatParticipantRepository.findAllByUserID(me.getId());
+		List<Chat> myDirectChats = new ArrayList<>();
+		allMyChats.forEach(chat->{
+			Optional<Chat> opChat = chatRepository.findById(chat.getChatID());
+			if(opChat.isPresent() && !opChat.get().getIsGroup()) {
+				myDirectChats.add(opChat.get());
+			}
+		});
+		List<User> users = userRepository.findAll();
+		users.forEach(user->{
+			if(!user.equals(me)) {
+				boolean existChat = false;
+				for(Chat chat : myDirectChats) {
+					if(chat.getParticipants().contains(user.getId())) {
+						existChat = true;
+						break;
+					}
+				}
+				if(!existChat && !user.getBlocked()) {
+					myDirectChats.add(addSimple(user.getId()));
+				}
+			}
+		});
+		return myDirectChats;
+	}
+
+	@Override
+	public List<Chat> groupChats() {
+		User me = AuthHelper.user();
+		List<ChatParticipant> allMyChats = chatParticipantRepository.findAllByUserID(me.getId());
+		List<Chat> myGroupChats = new ArrayList<>();
+		allMyChats.forEach(chat->{
+			Optional<Chat> opChat = chatRepository.findById(chat.getChatID());
+			if(opChat.isPresent() && opChat.get().getIsGroup()) {
+				myGroupChats.add(opChat.get());
+			}
+		});
+		return myGroupChats;
+	}
+	
+	public Map<UUID, Map<String, Object>> usersChatInfo() {
+		User me = AuthHelper.user();
+		Map<UUID, Map<String, Object>> people = new HashMap<>();
+		List<ChatParticipant> allMyChats = chatParticipantRepository.findAllByUserID(me.getId());
+		List<Chat> chats = new ArrayList<>();
+		allMyChats.forEach(chat->{
+			Optional<Chat> opChat = chatRepository.findById(chat.getChatID());
+			if(opChat.isPresent()) {
+				chats.add(opChat.get());
+			}
+		});
+		chats.forEach(chat->{
+			Set<UUID> participants = chat.getParticipants();
+			for(UUID userId : participants) {
+				if(people.containsKey(userId))
+					continue;
+				Optional<User> opUser = userRepository.findById(userId);
+				if(opUser.isPresent()) {
+					User user = opUser.get();
+					Map<String, Object> info = new HashMap<>();
+					info.put("id", user.getId());
+					info.put("name", user.getName());
+					info.put("mood", user.getMood());
+					info.put("avatar", user.getAvatar());
+					people.put(user.getId(), info);
+				}
+			}
+		});
+		return people;
 	}
 
 }

@@ -41,8 +41,12 @@ public class ChatController {
 	 */
 	@RequestMapping(value = "/bar", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Object> bar() {
-        return new ResponseEntity<Object>(null, HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> bar() {
+		Map<String, Object> response = new HashMap<>();
+		response.put("directs", chatService.directChats());
+		response.put("groups", chatService.groupChats());
+		response.put("users", chatService.usersChatInfo());
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 	
 	/**
