@@ -101,7 +101,7 @@
 										<limit>
 											<counter>LINE</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0.9</minimum>
+											<minimum>0.8</minimum>
 										</limit>
 									</limits>
 								</rule>
@@ -110,6 +110,8 @@
 								<exclude>com/huonix/simplechat/Application.*</exclude>
 								<exclude>com/huonix/simplechat/configs/CassandraConfig.*</exclude>
 								<exclude>com/huonix/simplechat/controllers/*</exclude>
+								<exclude>com/huonix/simplechat/annotations/*</exclude>
+								<exclude>com/huonix/simplechat/filters/*</exclude>
 							</excludes>
 						</configuration>
 					</execution>
