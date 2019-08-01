@@ -111,6 +111,8 @@ public class ChatService extends ErrorHandler implements IChatService {
 				if(!isUniqueDirectChat(ite.next(), ite.next())) {
 					throw new ChatCreationErrorException("Chat already created between this two users.");
 				}
+			} else if(model.getIsGroup() && model.getName() == null) {
+				throw new ChatCreationErrorException("A group chat is required to have a name.");
 			}
 			model.setId(UUIDs.timeBased());
 			model.setDateAdded(new Date());
@@ -331,7 +333,8 @@ public class ChatService extends ErrorHandler implements IChatService {
 			if(!user.equals(me)) {
 				boolean existChat = false;
 				for(Chat chat : myDirectChats) {
-					if(chat.getParticipants().contains(user.getId())) {
+					Set<UUID> participants = chat.getParticipants();
+					if(participants.contains(user.getId())) {
 						existChat = true;
 						break;
 					}
