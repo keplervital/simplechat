@@ -13,6 +13,12 @@ import com.datastax.driver.core.utils.UUIDs;
 import com.huonix.simplechat.models.User;
 import com.huonix.simplechat.services.UserService;
 
+/**
+ * Application initialization logic
+ * 
+ * @author Kepler Vital
+ *
+ */
 @Component
 @PropertySource(value = { "classpath:application.properties" })
 public class DefaultUserOnStartup {
@@ -27,10 +33,12 @@ public class DefaultUserOnStartup {
 	 
     @PostConstruct
     private void init() {
-    	LOGGER.info("AppInitializator initialization logic ...");
+    	LOGGER.info("##############################################");
+    	LOGGER.info("# APPLICATION INITIALIZATION LOGIC");
         if(userService.count() == 0) {
         	createDefaultUser();
         }
+        LOGGER.info("##############################################");
     }
     
     /**

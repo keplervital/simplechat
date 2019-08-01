@@ -1,6 +1,7 @@
 package com.huonix.simplechat.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -41,5 +42,26 @@ public interface IChatService extends IService<Chat, UUID> {
 	 * @return if the user leaved
 	 */
 	boolean leaveChat(UUID chatId) throws ChatLeaveException;
+	
+	/**
+	 * Gets all the user direct Chats
+	 * 
+	 * @return List<Chat>
+	 */
+	List<Chat> directChats();
+	
+	/**
+	 * Gets all the user group Chats
+	 * 
+	 * @return List<Chat>
+	 */
+	List<Chat> groupChats();
+	
+	/**
+	 * Gets all the users info
+	 * 
+	 * @return Map<UUID, Map<String, Object>>
+	 */
+	Map<UUID, Map<String, Object>> usersChatInfo();
 	
 }
