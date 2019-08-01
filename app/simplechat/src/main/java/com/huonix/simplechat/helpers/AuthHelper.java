@@ -32,7 +32,7 @@ public class AuthHelper {
 				userAuthorities.add(((GrantedAuthority)authority).getAuthority());
 			}
 		} catch(Exception e) {
-			
+			return userAuthorities;
 		}
 		return userAuthorities;
 	}
