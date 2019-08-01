@@ -5,15 +5,15 @@ package com.huonix.simplechat.exceptions;
  * @author Kepler Vital
  *
  */
-public class ChatCreationErrorException extends Exception {
-	
+public class MessageException extends Exception {
+
 	private static final long serialVersionUID = 1L;
-	
-	public ChatCreationErrorException() {
+
+	public MessageException() {
 		super();
 	}
 	
-	public ChatCreationErrorException(String message) {
+	public MessageException(String message) {
 		super(message);
 	}
 	
