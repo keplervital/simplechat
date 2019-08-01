@@ -8,11 +8,12 @@ package com.huonix.simplechat.exceptions;
  */
 public class UserNameNotUniqueException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
+	public UserNameNotUniqueException() {
+		super();
+	}
+	
 	public UserNameNotUniqueException(String message) {
 		super(message);
 	}
