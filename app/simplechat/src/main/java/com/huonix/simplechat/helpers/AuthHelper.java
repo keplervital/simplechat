@@ -17,6 +17,8 @@ import com.huonix.simplechat.models.User;
  */
 public class AuthHelper {
 	
+	public static User offlineUser;
+	
 	/**
 	 * Loads the authenticated user authorities
 	 * 
@@ -41,8 +43,12 @@ public class AuthHelper {
 	 * @return Set<String>
 	 */
 	public static User user() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return (User) auth.getDetails();
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			return (User) auth.getDetails();
+		} catch(Exception e) {
+			return offlineUser;
+		}
 	}
 	
 }
