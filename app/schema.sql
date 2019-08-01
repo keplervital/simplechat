@@ -24,7 +24,6 @@ CREATE TABLE chats (
 CREATE TABLE chat_participants (
 	user_id uuid PARTITION KEY,
 	chat_id uuid CLUSTERING KEY,
-	removed boolean CLUSTERING KEY,	
 	date_added timestamp CLUSTERING KEY
 );
 
