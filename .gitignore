@@ -3,3 +3,5 @@
 *.war
 *.zip
 .helpers
+node_modules
+.helper
