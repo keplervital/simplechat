@@ -19,7 +19,7 @@ class Chat extends Component {
                     color="primary"
                     onClick={() => dispatch(Actions.setApiKey(uuid().replace(/-/g,"")))}
                 >
-                    GENERATE
+                    GENERATE KEY
                 </Button><br/><br/>
                 <span>API KEY: {chat ? chat.user.apiKey : 'n/a'}</span>
             </div>
