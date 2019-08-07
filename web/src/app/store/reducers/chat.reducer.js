@@ -1,9 +1,15 @@
 import * as Actions from '../actions/chat.actions';
 
 export const initialState = {
-    user: {},
+    title: 'Simple Chat',
+    apiKey: null,
+    me: {},
     open: false,
-    title: 'Simple Chat'
+    bar: {
+        directs: [],
+        groups: [],
+        users: {}
+    }
 };
 
 const reducer = (state = initialState, action) => {
@@ -15,6 +21,18 @@ const reducer = (state = initialState, action) => {
             }
         }
         case Actions.SHOW_CHATBAR: {
+            return {
+                ...state,
+                ...action.payload
+            }
+        }
+        case Actions.UPDATE_USER: {
+            return {
+                ...state,
+                ...action.payload
+            }
+        }
+        case Actions.UPDATE_BAR: {
             return {
                 ...state,
                 ...action.payload

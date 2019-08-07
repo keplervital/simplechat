@@ -5,6 +5,9 @@ export const initialStates = {
 };
 
 const mainReducer = ({chat}, action) => {
+    //execute function in case of promisse
+    if(typeof action == 'function')
+        action();
     return {
         chat: chatReducer(chat, action)
     };
