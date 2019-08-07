@@ -1,4 +1,8 @@
-import chatReducer from './chat.reducer';
+import chatReducer, {initialState as chatInitialState} from './chat.reducer';
+
+export const initialStates = {
+    chat: chatInitialState
+};
 
 const mainReducer = ({chat}, action) => {
     return {

@@ -1,30 +1,63 @@
 import React, { Component } from "react";
 import { StateContext } from '../simplechat/state';
-import { Button } from '@material-ui/core';
-import uuid from 'uuid';
+import styles from '../styles/chat.module.css';
+import { withStyles, IconButton, Typography } from '@material-ui/core';
+import { ChatOutlined, CloseOutlined } from '@material-ui/icons';
+import classNames from 'classnames';
 import * as Actions from '../store/actions';
+
+const useStyles = theme => ({
+    iconButton: {
+        marginTop: 10,
+        marginLeft: 20,
+        color: '#FAFAFA',
+        padding: 0,
+        float: 'left'
+    },
+    iconClose: {
+        position: 'absolute',
+        right: 10,
+        top: 0
+    },
+    icon: {
+      fontSize: 36,
+    },
+    title: {
+        lineHeight: '55px',
+        color: '#FAFAFA'
+    }
+});
 
 class Chat extends Component {
 
     static contextType = StateContext;
 
     render() {
-        
+
+        const {classes} = this.props;
         const [{chat}, dispatch] = this.context;
 
+        console.log(chat);
+
         return (
-            <div>
-                <Button 
-                    variant="contained" 
-                    color="primary"
-                    onClick={() => dispatch(Actions.setApiKey(uuid().replace(/-/g,"")))}
-                >
-                    GENERATE KEY
-                </Button><br/><br/>
-                <span>API KEY: {chat ? chat.user.apiKey : 'n/a'}</span>
+            <div className={classNames(styles.holder, chat.open ? styles.open : '')}>
+                <div className={styles.holderTop}>
+                    <IconButton onClick={() => dispatch(Actions.showChatBar(true))} className={classes.iconButton}>
+                        <ChatOutlined className={classes.icon} />
+                    </IconButton>
+                    {chat.open ? (
+                            <React.Fragment>
+                                <Typography className={classNames(classes.title)}>{chat.title}</Typography>
+                                <IconButton onClick={() => dispatch(Actions.showChatBar(false))} className={classNames(classes.iconButton, classes.iconClose)}>
+                                    <CloseOutlined className={classes.icon} />
+                                </IconButton>
+                            </React.Fragment>
+                        ) : ''
+                    }
+                </div>
             </div>
           );
     }
 }
 
-export default Chat;
+export default withStyles(useStyles, {withTheme: true})(Chat);
