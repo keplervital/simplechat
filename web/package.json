@@ -19,8 +19,10 @@
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@material-ui/core": "^4.3.0",
+    "@material-ui/icons": "^4.2.1",
     "@react-simply/state": "^1.0.2",
     "babel-preset-es2015": "^6.24.1",
+    "classnames": "^2.2.6",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
