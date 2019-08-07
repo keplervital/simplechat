@@ -32,13 +32,26 @@ class Chat extends Component {
 
     static contextType = StateContext;
 
+    componentDidMount() {
+        this.updateChat();
+    }
+
+    componentDidUpdate() {
+        
+    }
+
+    updateChat() {
+        const [{}, dispatch] = this.context;
+        dispatch(Actions.setApiKey('f379ead2b46911e9a99a2b24df60637c'));
+        dispatch(Actions.updateUser(dispatch));
+        dispatch(Actions.updateBar(dispatch));
+    }
+
     render() {
 
         const {classes} = this.props;
         const [{chat}, dispatch] = this.context;
-
-        console.log(chat);
-
+        
         return (
             <div className={classNames(styles.holder, chat.open ? styles.open : '')}>
                 <div className={styles.holderTop}>
