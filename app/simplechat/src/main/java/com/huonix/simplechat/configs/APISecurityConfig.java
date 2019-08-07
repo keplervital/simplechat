@@ -25,12 +25,14 @@ public class APISecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-        	.csrf()
+	        .csrf()
         	.disable()
+        	.cors()
+        	.and()
         	.sessionManagement()
         	.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         	.and()
-        	//.antMatcher(AUTH_ROUTE)
+	    	//.antMatcher(AUTH_ROUTE)
         	.addFilterBefore(apiKeyAuthFilter, AnonymousAuthenticationFilter.class)
         	.authorizeRequests()
         	//.antMatchers(HttpMethod.POST, USER_CREATE_ROUTE).permitAll()
