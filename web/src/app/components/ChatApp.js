@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { StateContext } from '../simplechat/state';
 import styles from '../styles/chat.module.css';
-import { withStyles, IconButton, Typography } from '@material-ui/core';
+import { withStyles, IconButton, Typography, Grid } from '@material-ui/core';
 import { ChatOutlined, CloseOutlined } from '@material-ui/icons';
 import classNames from 'classnames';
 import * as Actions from '../store/actions';
+import ChatBar from './ChatBar';
+import ChatDialog from './ChatDialog';
 
 const useStyles = theme => ({
     iconButton: {
@@ -28,7 +30,7 @@ const useStyles = theme => ({
     }
 });
 
-class Chat extends Component {
+class ChatApp extends Component {
 
     static contextType = StateContext;
 
@@ -53,8 +55,8 @@ class Chat extends Component {
         const [{chat}, dispatch] = this.context;
         
         return (
-            <div className={classNames(styles.holder, chat.open ? styles.open : '')}>
-                <div className={styles.holderTop}>
+            <Grid container alignContent="flex-start" className={classNames(styles.holder, chat.open ? styles.open : '')}>
+                <Grid item xs={12} className={styles.holderTop}>
                     <IconButton onClick={() => dispatch(Actions.showChatBar(true))} className={classes.iconButton}>
                         <ChatOutlined className={classes.icon} />
                     </IconButton>
@@ -67,10 +69,20 @@ class Chat extends Component {
                             </React.Fragment>
                         ) : ''
                     }
-                </div>
-            </div>
+                </Grid>
+                <Grid container className={classNames(styles.fullHeight)}>
+                    <Grid item xs={chat.open ? 2 : 12} className={classNames(styles.barHolder)}>
+                        <ChatBar />
+                    </Grid>
+                    {chat.open ? (
+                        <Grid item xs={10} className={classNames(styles.conversationHolder)}>
+                            <ChatDialog />
+                        </Grid>
+                    ) : ''}
+                </Grid>
+            </Grid>
           );
     }
 }
 
-export default withStyles(useStyles, {withTheme: true})(Chat);
+export default withStyles(useStyles, {withTheme: true})(ChatApp);

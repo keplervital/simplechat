@@ -1,5 +1,5 @@
 .holder {
-    width: 75px;
+    width: 70px !important;
     height: 100%;
     position: fixed;
     background: #fafafa;
@@ -18,7 +18,58 @@
 }
 
 .open {
-    width: 360px;
+    width: 360px !important;
     max-width: 100%;
     transition: 600ms;
+}
+
+.fullHeight {
+    height: calc(100% - 60px);
+}
+
+.barHolder {
+    overflow-y: scroll; 
+    height: 100%;
+    box-shadow: inset -3px 0 9px -7px rgba(0,0,0,0.4);
+    width: 70px !important;
+    min-width: 70px !important;
+}
+
+.user {
+    width: 100%;
+    height: 60px;
+    margin-bottom: 2px !important;
+    cursor: pointer;
+    position: relative;
+}
+
+.user:hover {
+    background: #f3f3f3;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    margin: 6px auto;
+    background-image: url('./../images/avatar.jpg');
+    background-size: cover;
+}
+
+.userStatus {
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    background: #3a7529;
+    border-radius: 100%;
+    right: 15px;
+    margin-top: -18px;
+    border: 2px solid #fafafa;
+}
+
+.conversationHolder {
+    max-width: 80% !important;
+    flex-basis: 80% !important;
 }
