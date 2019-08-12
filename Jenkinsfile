@@ -27,7 +27,7 @@ pipeline {
             parallel{
                 stage ('Deploy to Staging'){
                     steps {
-                        sh "Now deploying"
+                        echo 'Now deploying'
                     }
                 }
             }
