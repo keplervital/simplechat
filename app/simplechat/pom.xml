@@ -112,6 +112,7 @@
 								<exclude>com/huonix/simplechat/controllers/*</exclude>
 								<exclude>com/huonix/simplechat/annotations/*</exclude>
 								<exclude>com/huonix/simplechat/filters/*</exclude>
+								<exclude>com/huonix/simplechat/configs/*</exclude>
 							</excludes>
 						</configuration>
 					</execution>
