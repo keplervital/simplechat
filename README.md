@@ -1,3 +1,5 @@
+[![Build Status](http://ec2-54-229-180-152.eu-west-1.compute.amazonaws.com/job/simplechat/job/master/badge/icon)](http://ec2-54-229-180-152.eu-west-1.compute.amazonaws.com/job/simplechat/job/master/)
+
 <p align="center">
   
   <h3 align="center">Simple Chat</h3>
