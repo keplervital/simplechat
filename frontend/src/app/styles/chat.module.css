@@ -1,0 +1,103 @@
+.holder {
+    width: 70px !important;
+    height: 100%;
+    position: fixed;
+    background: #fafafa;
+    top: 0;
+    right: 0;
+    box-shadow: -1px 0px 10px -5px #aaaaaa;
+}
+
+.holderTop {
+    width: 100%;
+    height: 60px;
+    overflow: hidden;
+    background: #212840;
+    text-indent: 20px;
+    box-shadow: 2px 5px 6px -2px #aaaaaa;
+}
+
+.open {
+    width: 360px !important;
+    max-width: 100%;
+    transition: 600ms;
+}
+
+.fullHeight {
+    height: calc(100% - 60px);
+}
+
+.barHolder {
+    overflow-y: scroll; 
+    height: 100%;
+    box-shadow: inset -3px 0 9px -7px rgba(0,0,0,0.4);
+    width: 70px !important;
+    min-width: 70px !important;
+}
+
+.user {
+    width: 100%;
+    height: 60px;
+    margin-bottom: 2px !important;
+    cursor: pointer;
+    position: relative;
+}
+
+.user:hover {
+    background: #f3f3f3;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    margin: 6px auto;
+    background-image: url('./../images/avatar.jpg');
+    background-size: cover;
+}
+
+.userStatus {
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    background: #3a7529;
+    border-radius: 100%;
+    right: 15px;
+    margin-top: -18px;
+    border: 2px solid #fafafa;
+}
+
+.conversationHolder {
+    max-width: 80% !important;
+    flex-basis: 80% !important;
+}
+
+.dialogHolder {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.dialogIcon {
+    width: 90%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    z-index: 0;
+    text-align: center;
+    padding-top: 50%;
+    color: #aeaeae;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.dialogTop {
+
+}
+
+.dialogBottom {
+
+}
