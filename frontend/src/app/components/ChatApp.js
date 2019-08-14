@@ -45,7 +45,7 @@ class ChatApp extends Component {
     updateChat() {
         const [{}, dispatch] = this.context;
         dispatch(Actions.setApiKey('f379ead2b46911e9a99a2b24df60637c'));
-        dispatch(Actions.updateUser(dispatch));
+        dispatch(Actions.updateMe(dispatch));
         dispatch(Actions.updateBar(dispatch));
     }
 
@@ -57,12 +57,16 @@ class ChatApp extends Component {
         return (
             <Grid container alignContent="flex-start" className={classNames(styles.holder, chat.open ? styles.open : '')}>
                 <Grid item xs={12} className={styles.holderTop}>
-                    <IconButton onClick={() => dispatch(Actions.showChatBar(true))} className={classes.iconButton}>
-                        <ChatOutlined className={classes.icon} />
-                    </IconButton>
+                    {!chat.conversation.open ? (
+                        <IconButton onClick={() => dispatch(Actions.showChatBar(true))} className={classes.iconButton}>
+                            <ChatOutlined className={classes.icon} />
+                        </IconButton>
+                    ) : (
+                        <React.Fragment></React.Fragment>
+                    )}
                     {chat.open ? (
                             <React.Fragment>
-                                <Typography className={classNames(classes.title)}>{chat.title}</Typography>
+                                <Typography className={classNames(classes.title)}>{!chat.conversation.open ? chat.title : chat.conversation.name}</Typography>
                                 <IconButton onClick={() => dispatch(Actions.showChatBar(false))} className={classNames(classes.iconButton, classes.iconClose)}>
                                     <CloseOutlined className={classes.icon} />
                                 </IconButton>

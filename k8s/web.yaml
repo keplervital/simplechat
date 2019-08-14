@@ -1,0 +1,40 @@
+## Cluster IP
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  type: ClusterIP
+  selector:
+    component: web
+  ports:
+  - port: 80
+    targetPort: 3000
+---
+## Deployment of the Pods
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels: 
+        component: web
+    spec:
+      containers:
+        - name: web
+          image: kvital/simplechat-web
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "500m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"

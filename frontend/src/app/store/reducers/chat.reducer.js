@@ -9,6 +9,11 @@ export const initialState = {
         directs: [],
         groups: [],
         users: {}
+    },
+    conversation: {
+        open: false,
+        id: null,
+        messages: []
     }
 };
 
@@ -26,7 +31,7 @@ const reducer = (state = initialState, action) => {
                 ...action.payload
             }
         }
-        case Actions.UPDATE_USER: {
+        case Actions.UPDATE_ME: {
             return {
                 ...state,
                 ...action.payload
@@ -36,6 +41,21 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...action.payload
+            }
+        }
+        case Actions.OPEN_CHAT: {
+            return {
+                ...state,
+                ...action.payload
+            }
+        }
+        case Actions.SEND_MESSAGE: {
+            return {
+                ...state,
+                conversation: {
+                    ...state.conversation,
+                    messages: [...state.conversation.messages, action.payload.message]
+                }
             }
         }
         default: {
