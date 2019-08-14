@@ -2,4 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./app/App";
 
-ReactDOM.render(<App />, document.querySelector("#simplechat"));
+const container = document.querySelector('#simplechat');
+const auth = container.getAttribute('auth');
+
+ReactDOM.render(<App auth={auth} />, container);
