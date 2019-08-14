@@ -109,12 +109,14 @@ class ChatDialog extends Component {
     }
 
     onEnter(e) {
-        if(e.which === 13 && this.state.message.length > 0) {
+        if(e.which === 13) {
             this.sendMessage();
         }
     }
 
     sendMessage() {
+        if(this.state.message.length === 0)
+            return;
         const [{chat}] = this.context;
         this.socket.emit('send-message', {
             auth: chat.apiKey,
