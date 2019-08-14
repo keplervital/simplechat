@@ -10,6 +10,9 @@ export const initialState = {
         groups: [],
         users: {}
     },
+    online: {
+        users: []
+    },
     conversation: {
         open: false,
         id: null,
@@ -55,6 +58,15 @@ const reducer = (state = initialState, action) => {
                 conversation: {
                     ...state.conversation,
                     messages: [...state.conversation.messages, action.payload.message]
+                }
+            }
+        }
+        case Actions.ONLINE_USERS: {
+            return {
+                ...state,
+                online: {
+                    ...state.online,
+                    users: action.payload.users
                 }
             }
         }

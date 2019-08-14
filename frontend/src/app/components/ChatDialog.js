@@ -47,7 +47,7 @@ class ChatDialog extends Component {
     static contextType = StateContext;
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             chatId: null,
             message: ''

@@ -4,5 +4,9 @@ module.exports.config = {
     },
     endpoint: {
         host: 'http://localhost:8080'
+    },
+    redis: {
+        host: 'localhost',
+        port: '6379'
     }
 };

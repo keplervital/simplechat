@@ -11,6 +11,7 @@ export const UPDATE_BAR   = `[${ACTION_ID}] UPDATE CHAT BAR`;
 export const OPEN_CHAT    = `[${ACTION_ID}] OPEN CHAT`;
 export const SEND_MESSAGE = `[${ACTION_ID}] SEND MESSAGE`;
 export const NEW_MESSAGE  = `[${ACTION_ID}] NEW MESSAGE`;
+export const ONLINE_USERS = `[${ACTION_ID}] ONLINE USERS`;
 
 export function setApiKey(apiKey) {
     axios.defaults.headers.common['API-Key'] = apiKey;
@@ -88,6 +89,15 @@ export function newMessageToOpenChat(message) {
         type: NEW_MESSAGE,
         payload: {
             message: message
+        }
+    }
+}
+
+export function onlineUsers(users) {
+    return {
+        type: ONLINE_USERS,
+        payload: {
+            users
         }
     }
 }
