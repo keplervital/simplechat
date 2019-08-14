@@ -49,7 +49,7 @@ const reducer = (state = initialState, action) => {
                 ...action.payload
             }
         }
-        case Actions.SEND_MESSAGE: {
+        case Actions.NEW_MESSAGE: {
             return {
                 ...state,
                 conversation: {

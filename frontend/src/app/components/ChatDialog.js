@@ -11,6 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import DirectionsIcon from '@material-ui/icons/Directions';
 import * as Actions from '../store/actions';
+import socketIOClient from "socket.io-client";
 
 const useStyles = theme => ({
     icon: {
@@ -51,12 +52,19 @@ class ChatDialog extends Component {
             chatId: null,
             message: ''
         }
+        this.socket = socketIOClient(Config.endpoint.socket);
         this.updateChatId.bind(this);
         this.sendMessage.bind(this);
+        this.disableSocketOnChat.bind(this);
+        this.enableSocketOnChat.bind(this);
     }
 
     componentDidMount() {
         this.updateChatId();
+    }
+
+    componentWillUnmount() {
+        this.disableSocketOnChat(this.state.chatId);
     }
 
     componentDidUpdate() {
@@ -66,20 +74,53 @@ class ChatDialog extends Component {
     updateChatId() {
         const [{chat}, _] = this.context;
         if(chat.conversation.id !== this.state.chatId) {
+            this.disableSocketOnChat(this.state.chatId);
+            this.enableSocketOnChat(chat.conversation.id);
             this.setState({
                 chatId: chat.conversation.id,
                 message: ''
-            })
+            });
         }
+    }
+
+    disableSocketOnChat(chatId) {
+        if(chatId == null)
+            return;
+        this.socket.off(chatId);
+    }
+
+    enableSocketOnChat(chatId) {
+        if(chatId == null)
+            return;
+        const [_, dispatch] = this.context;
+        this.socket.on(chatId, response => {
+            switch(response.type) {
+                case 'new-message':
+                    dispatch(Actions.newMessageToOpenChat(response.data));
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     setMessage(e) {
         this.setState({ message: e.target.value });
     }
 
+    onEnter(e) {
+        if(e.which === 13 && this.state.message.length > 0) {
+            this.sendMessage();
+        }
+    }
+
     sendMessage() {
-        const [_, dispatch] = this.context;
-        dispatch(Actions.sendMessage(dispatch, this.state.chatId, this.state.message));
+        const [{chat}] = this.context;
+        this.socket.emit('send-message', {
+            auth: chat.apiKey,
+            chatId: this.state.chatId,
+            message: this.state.message
+        }, () => {});
         this.setState({ message: '' });
     }
 
@@ -121,6 +162,7 @@ class ChatDialog extends Component {
                                         placeholder={Config.lang.type}
                                         inputProps={{ 'aria-label': Config.lang.type }}
                                         onChange={this.setMessage.bind(this)}
+                                        onKeyPress={this.onEnter.bind(this)}
                                         value={this.state.message}
                                     />
                                     <Divider className={classes.divider} />
