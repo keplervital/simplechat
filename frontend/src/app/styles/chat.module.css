@@ -80,6 +80,18 @@
     border: 2px solid #fafafa;
 }
 
+.grey {
+    background: #717171;
+}
+
+.green {
+    background: #3a7529;
+}
+
+.yellow {
+    background: #ffe000;
+}
+
 .conversationHolder {
     max-width: 80% !important;
     flex-basis: 80% !important;
