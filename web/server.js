@@ -3,55 +3,29 @@ const app = express();
 const port = (process.env.PORT || 3000);
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
-const axios = require('axios');
-const {config} = require('./config/config');
+const logger = require('./modules/logger');
+const config = require('./configs/config');
 const redis = require("redis").createClient(config.redis);
+const rabbitmq = require('amqp').createConnection(config.rabbitmq);
+const api = require('./modules/api').setContext({io, redis, config, rabbitmq});
+const events = require('./enums/events');
 
-const api = {
-	message: {
-		send: {
-			id: 'send-message',
-			handler(data, callback) {
-				const headers = { [config.headers.auth]: data.auth };
-				const request = axios.post(`${config.endpoint.host}/message`, {
-					chatID: data.chatId,
-					body: data.message
-				}, { headers });
-				request.then((response) => {
-					io.sockets.emit(data.chatId, {
-						type: 'new-message',
-						data: response.data.message
-					});
-				});
-				callback();
-			}
-		}
-	},
-	online: {
-		user: {
-			id: 'set-user',
-			handler(data, callback) {
-				this.userId = data.userId;
-				redis.sadd(['online', this.userId], () => api.online.notify());
-				callback();
-			}
-		},
-		notify() {
-			redis.smembers('online', function(_, reply) {
-				io.sockets.emit('online-users', reply);
-			});
-		}
-	}
-}
+rabbitmq.on('error', e => logger.error("Error from amqp: ", e));
 
 io.sockets.on('connection', socket => {
-	socket.on(api.message.send.id, api.message.send.handler);
-	socket.on(api.online.user.id, api.online.user.handler);
-	socket.on('disconnect', () => {
-		if(socket.userId == null)
-			return;
-		redis.srem(['online', socket.userId], () => api.online.notify());
-	});
+	socket.on(events.MESSAGE_SEND, 
+		(data, callback) => api.sendMessage({data, callback, socket}));
+	socket.on(events.USER_ONLINE, 
+		(data, callback) => api.setUserOnline({data, callback, socket}));
+	socket.on(events.DISCONNECT, 
+		(data, callback) => api.disconnectUser({data, callback, socket}));
 });
 
-server.listen(port, () => console.log(`Simplechat server listening on port ${port}.`));
+server.on('ready', () => {
+	server.listen(port, () => console.log(`Server listening on port ${port}.`));
+});
+
+rabbitmq.on('ready', () => {
+	api.createQueue(rabbitmq);
+	server.emit('ready');
+});
