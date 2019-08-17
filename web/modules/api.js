@@ -34,11 +34,31 @@ class Api {
                             data: data.payload.message
                         });
                         break;
+                    case events.UNREAD_MESSAGES:
+                        const users = data.payload;
+                        users.map(userId => _this.userNotifyUnreadMessages(userId));
+                        break;
                     default:
                         logger.warn('Unknown event type published.');
                         break;
                 }
             });
+        });
+    }
+
+    userNotifyUnreadMessages(userId) {
+        const _this = this;
+        _this.redis.hgetall(`UnreadMessage:${userId}`, (_, reply) => {
+            const unreadMessages = {};
+            for(const id in reply) {
+                const match = id.match(/unread\.\[(.*?)\]/i);
+                if(match == null) 
+                    continue;
+                const chatId = match[1];
+                const count = reply[id];
+                unreadMessages[chatId] = count;
+            }
+            _this.io.sockets.emit(userId, unreadMessages);
         });
     }
 
@@ -62,13 +82,23 @@ class Api {
                 }
             }));
         });
-        callback();
+        if(callback)
+            callback();
     }
 
     setUserOnline({data, callback, socket}) {
         socket.userId = data.userId;
         this.redis.sadd(['online', socket.userId], () => this.notifyOnlineUsers());
-        callback();
+        this.userNotifyUnreadMessages(socket.userId);
+        if(callback)
+            callback();
+    }
+
+    markMessageRead({data, callback}) {
+        this.redis.hset(`UnreadMessage:${data.userId}`, `unread.[${data.chatId}]`, 0);
+        this.userNotifyUnreadMessages(data.userId);
+        if(callback)
+            callback();
     }
 
     notifyOnlineUsers() {
