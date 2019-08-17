@@ -69,11 +69,31 @@
     top: calc(50% - 10px);
 }
 
+.unreadMessages {
+    width: auto;
+    height: 20px;
+    min-width: 20px;
+    position: absolute;
+    background: #212840;
+    border-radius: 100%;
+    left: 5px;
+    bottom: 5px;
+    font-size: 10px;
+    color: #FFF;
+    text-align: center;
+    line-height: 20px;
+    border: 2px solid #fafafa;
+}
+
+.hide {
+    display: none;
+}
+
 .userStatus {
     width: 8px;
     height: 8px;
     position: absolute;
-    background: #3a7529;
+    background: #717171;
     border-radius: 100%;
     right: 15px;
     margin-top: -18px;
