@@ -12,6 +12,7 @@ export const OPEN_CHAT    = `[${ACTION_ID}] OPEN CHAT`;
 export const SEND_MESSAGE = `[${ACTION_ID}] SEND MESSAGE`;
 export const NEW_MESSAGE  = `[${ACTION_ID}] NEW MESSAGE`;
 export const ONLINE_USERS = `[${ACTION_ID}] ONLINE USERS`;
+export const UNREAD_MESSAGES = `[${ACTION_ID}] UNREAD MESSAGES`;
 
 export function setApiKey(apiKey) {
     axios.defaults.headers.common['API-Key'] = apiKey;
@@ -98,6 +99,15 @@ export function onlineUsers(users) {
         type: ONLINE_USERS,
         payload: {
             users
+        }
+    }
+}
+
+export function unreadMessages(unreadMessages) {
+    return {
+        type: UNREAD_MESSAGES,
+        payload: {
+            unreadMessages
         }
     }
 }

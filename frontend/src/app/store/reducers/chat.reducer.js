@@ -13,6 +13,7 @@ export const initialState = {
     online: {
         users: []
     },
+    unread: {},
     conversation: {
         open: false,
         id: null,
@@ -68,6 +69,12 @@ const reducer = (state = initialState, action) => {
                     ...state.online,
                     users: action.payload.users
                 }
+            }
+        }
+        case Actions.UNREAD_MESSAGES: {
+            return {
+                ...state,
+                unread: action.payload.unreadMessages
             }
         }
         default: {
