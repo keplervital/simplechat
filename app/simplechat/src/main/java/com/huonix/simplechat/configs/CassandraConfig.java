@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.cassandra.config.CassandraClusterFactoryBean;
@@ -24,7 +25,8 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
  */
 @Configuration
 @PropertySource(value = { "classpath:application.properties" })
-@EnableCassandraRepositories(basePackages = "com.huonix.simplechat.repositories")
+@EnableCassandraRepositories(basePackages = {"com.huonix.simplechat.repositories"})
+@Profile(value = {"default"})
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
 	private static final Log LOGGER = LogFactory.getLog(CassandraConfig.class);
@@ -34,17 +36,17 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
 
 	@Override
 	protected String getKeyspaceName() {
-		return environment.getProperty("cassandra.keyspace");
+		return environment.getProperty("spring.cassandra.keyspace");
 	}
 
 	@Override
 	protected String getContactPoints() {
-		return environment.getProperty("cassandra.contactpoints");
+		return environment.getProperty("spring.cassandra.contactpoints");
 	}
 
 	@Override
 	protected int getPort() {
-		return Integer.parseInt(environment.getProperty("cassandra.port"));
+		return Integer.parseInt(environment.getProperty("spring.cassandra.port"));
 	}
 	
 	@Override
