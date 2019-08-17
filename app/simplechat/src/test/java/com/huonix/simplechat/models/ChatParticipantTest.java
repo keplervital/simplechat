@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,16 +21,21 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import com.datastax.driver.core.utils.UUIDs;
 import com.huonix.simplechat.configs.CassandraTestExecutionListener;
 import com.huonix.simplechat.configs.EmbeddedCassandraConfig;
+import com.huonix.simplechat.configs.EmbeddedRabbitConfig;
+import com.huonix.simplechat.configs.EmbeddedRedisConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
-		EmbeddedCassandraConfig.class
+		EmbeddedCassandraConfig.class, 
+		EmbeddedRedisConfig.class,
+		EmbeddedRabbitConfig.class
 }, initializers = ConfigFileApplicationContextInitializer.class)
-@SpringBootTest
 @TestExecutionListeners({ 
 	CassandraTestExecutionListener.class,
 	DependencyInjectionTestExecutionListener.class 
 })
+@SpringBootTest
+@ActiveProfiles(profiles = {"test"})
 public class ChatParticipantTest {
 
 	private UUID chatId;

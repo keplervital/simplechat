@@ -10,10 +10,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,18 +23,23 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import com.huonix.simplechat.configs.CassandraTestExecutionListener;
 import com.huonix.simplechat.configs.EmbeddedCassandraConfig;
+import com.huonix.simplechat.configs.EmbeddedRabbitConfig;
+import com.huonix.simplechat.configs.EmbeddedRedisConfig;
 import com.huonix.simplechat.enums.ERole;
-import com.huonix.simplechat.services.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ComponentScan({"com.huonix.simplechat.containers"})
 @ContextConfiguration(classes = {
-		EmbeddedCassandraConfig.class
+		EmbeddedCassandraConfig.class, 
+		EmbeddedRedisConfig.class,
+		EmbeddedRabbitConfig.class
 }, initializers = ConfigFileApplicationContextInitializer.class)
 @TestExecutionListeners({ 
 	CassandraTestExecutionListener.class,
 	DependencyInjectionTestExecutionListener.class 
 })
-@SpringBootTest(classes = { UserService.class })
+@SpringBootTest
+@ActiveProfiles(profiles = {"test"})
 public class AuthHelperTest {
 	
 	@Test
