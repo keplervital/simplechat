@@ -17,6 +17,8 @@ io.sockets.on('connection', socket => {
 		(data, callback) => api.sendMessage({data, callback, socket}));
 	socket.on(events.USER_ONLINE, 
 		(data, callback) => api.setUserOnline({data, callback, socket}));
+	socket.on(events.MARK_MESSAGE_READ, 
+		(data, callback) => api.markMessageRead({data, callback, socket}));
 	socket.on(events.DISCONNECT, 
 		(data, callback) => api.disconnectUser({data, callback, socket}));
 });
