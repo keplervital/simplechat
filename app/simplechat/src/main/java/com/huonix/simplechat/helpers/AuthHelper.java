@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.datastax.driver.core.utils.UUIDs;
 import com.huonix.simplechat.models.User;
 
 /**
@@ -17,7 +18,7 @@ import com.huonix.simplechat.models.User;
  */
 public class AuthHelper {
 	
-	public static User offlineUser;
+	public static User offlineUser = new User(UUIDs.timeBased(), false, "guest");
 	
 	/**
 	 * Loads the authenticated user authorities
