@@ -13,6 +13,7 @@ import com.datastax.driver.core.KeyspaceMetadata;
 import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.TableMetadata;
+import com.huonix.simplechat.containers.CassandraContainer;
 
 public class CassandraTestExecutionListener extends AbstractTestExecutionListener {
 	
@@ -23,6 +24,10 @@ public class CassandraTestExecutionListener extends AbstractTestExecutionListene
     @Override
     public void afterTestMethod(final TestContext testContext) throws Exception {
     	String keyspace = (String) TestApplicationContext.getBean("dbKeyspace");
+    	CassandraContainer container = 
+    			(CassandraContainer) TestApplicationContext.getBean("cassandraContainer");
+    	if(!container.isRunning())
+    		return;
         LOGGER.debug("AfterTest: clean embedded Cassandra.");
         final Session session = (Session) TestApplicationContext.getBean("dbSession");
         for (final String table : tables(session)) {

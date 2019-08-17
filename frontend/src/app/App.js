@@ -3,10 +3,10 @@ import { StateProvider } from './simplechat/state';
 import reducer, {initialStates} from './store/reducers';
 import ChatApp from './components/ChatApp';
 
-const App = () => {
+const App = (props) => {
     return (
         <StateProvider initialState={initialStates} reducer={reducer}>
-           <ChatApp />
+           <ChatApp auth={props.auth} />
         </StateProvider>
     );
 }

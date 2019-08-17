@@ -9,10 +9,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,10 +25,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.datastax.driver.core.utils.UUIDs;
-import com.huonix.simplechat.configs.APISecurityConfig;
 import com.huonix.simplechat.configs.CassandraTestExecutionListener;
 import com.huonix.simplechat.configs.EmbeddedCassandraConfig;
-import com.huonix.simplechat.filters.APIKeyAuthFilter;
+import com.huonix.simplechat.configs.EmbeddedRabbitConfig;
+import com.huonix.simplechat.configs.EmbeddedRedisConfig;
 import com.huonix.simplechat.models.User;
 import com.huonix.simplechat.services.UserService;
 
@@ -40,15 +41,18 @@ import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {
-		EmbeddedCassandraConfig.class, APISecurityConfig.class, UserService.class, UserController.class, APIKeyAuthFilter.class
+		EmbeddedCassandraConfig.class, 
+		EmbeddedRedisConfig.class,
+		EmbeddedRabbitConfig.class
 }, initializers = ConfigFileApplicationContextInitializer.class)
 @TestExecutionListeners({ 
 	CassandraTestExecutionListener.class,
 	DependencyInjectionTestExecutionListener.class 
 })
 @PropertySource(value = { "classpath:application.properties" })
-@WebMvcTest
+@SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles(profiles = {"test"})
 public class UserControllerIntegrationTest {
 	
 	private User user;

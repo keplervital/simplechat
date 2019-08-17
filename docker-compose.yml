@@ -4,6 +4,15 @@ services:
   cassandra:
     container_name: 'cassandra'
     image: cassandra:latest
-    build: .
     ports:
       - '9042:9042'
+  redis:
+    container_name: 'redis'
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  rabbitmq:
+    container_name: 'rabbitmq'
+    image: rabbitmq:3
+    ports:
+      - "5672:5672"

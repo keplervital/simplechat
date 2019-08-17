@@ -10,6 +10,9 @@ export const UPDATE_ME    = `[${ACTION_ID}] UPDATE CHAT ME`;
 export const UPDATE_BAR   = `[${ACTION_ID}] UPDATE CHAT BAR`;
 export const OPEN_CHAT    = `[${ACTION_ID}] OPEN CHAT`;
 export const SEND_MESSAGE = `[${ACTION_ID}] SEND MESSAGE`;
+export const NEW_MESSAGE  = `[${ACTION_ID}] NEW MESSAGE`;
+export const ONLINE_USERS = `[${ACTION_ID}] ONLINE USERS`;
+export const UNREAD_MESSAGES = `[${ACTION_ID}] UNREAD MESSAGES`;
 
 export function setApiKey(apiKey) {
     axios.defaults.headers.common['API-Key'] = apiKey;
@@ -82,19 +85,29 @@ export function openChat(dispatch, chatId, name, image) {
     }
 }
 
-export function sendMessage(dispatch, chatId, message) {
-    const request = axios.post(`${Config.host}/message`, {
-        chatID: chatId,
-        body: message
-    });
-    return () => {
-        request.then((response) => {
-            dispatch({
-                type: SEND_MESSAGE,
-                payload: {
-                    message: response.data.message
-                }
-            });
-        });
+export function newMessageToOpenChat(message) {
+    return {
+        type: NEW_MESSAGE,
+        payload: {
+            message: message
+        }
+    }
+}
+
+export function onlineUsers(users) {
+    return {
+        type: ONLINE_USERS,
+        payload: {
+            users
+        }
+    }
+}
+
+export function unreadMessages(unreadMessages) {
+    return {
+        type: UNREAD_MESSAGES,
+        payload: {
+            unreadMessages
+        }
     }
 }

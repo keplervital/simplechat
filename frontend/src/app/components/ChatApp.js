@@ -44,7 +44,7 @@ class ChatApp extends Component {
 
     updateChat() {
         const [{}, dispatch] = this.context;
-        dispatch(Actions.setApiKey('f379ead2b46911e9a99a2b24df60637c'));
+        dispatch(Actions.setApiKey(this.props.auth));
         dispatch(Actions.updateMe(dispatch));
         dispatch(Actions.updateBar(dispatch));
     }
