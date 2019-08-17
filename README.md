@@ -1,4 +1,4 @@
-[![Build Status](http://ec2-54-229-180-152.eu-west-1.compute.amazonaws.com/job/simplechat/job/master/badge/icon)](http://ec2-54-229-180-152.eu-west-1.compute.amazonaws.com/job/simplechat/job/master/)
+[![Build Status](http://ec2-52-212-155-80.eu-west-1.compute.amazonaws.com:8080/job/simplechat/job/master/badge/icon)](http://ec2-52-212-155-80.eu-west-1.compute.amazonaws.com:8080/job/simplechat/job/master/)
 
 <p align="center">
   
@@ -15,9 +15,9 @@
 
 ### Prerequisites
 
+* Java 1.8
+* NodeJS 11+
 * Docker
-* Java
-* Cassandra
-* NodeJS
-* RabbitMQ
-* Redis
+* Cassandra 3
+* RabbitMQ 3
+* Redis 5
