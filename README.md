@@ -6,7 +6,9 @@ Simple chat was designed with scalability in mind to allow easy integration to a
 
 ## System Design
 
-![alt text](https://raw.githubusercontent.com/huonix/simplechat/master/system.jpg "System Design")
+<a href="https://github.com/huonix/simplechat">
+  <img src="system.jpg" width="100%" alt="System Design" />
+</a>
 
 ## Prerequisites
 
@@ -89,6 +91,13 @@ Include the "frontend/dist/simplechat.prod.js" into your application and begin t
 ```
 
 The auth attribute is the auth key of the user.
+
+
+## Example View 
+
+<a href="https://github.com/huonix/simplechat">
+  <img src="demo.gif" width="100%" alt="Simplechat" />
+</a>
 
 ## How can I support the project'?'
 
