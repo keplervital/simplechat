@@ -1,12 +1,25 @@
-version: '2'
+version: '2.1'
 
 services:
   simplechat:
     container_name: 'simplechat'
-    build: .
+    build: ./frontend
     environment:
       - API_URL=http://localhost:8080
       - SOCKET_URL=http://localhost:3000
+    ports:
+      - '8082:80'
+    working_dir: '/app'
+    depends_on:
+        - simplechat-api
+        - simplechat-web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: /bin/bash -c "/app/after-start.sh && exec nginx -g 'daemon off;'"
+  simplechat-api:
+    container_name: 'simplechat-api'
+    build: ./app
+    environment:
       - CASSANDRA_CONTACT_POINTS=cassandra
       - CASSANDRA_PORT=9042
       - REDIS_HOST=redis
@@ -14,26 +27,59 @@ services:
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_PORT=5672
     depends_on:
-      - cassandra
-      - redis
-      - rabbitmq
+      cassandra:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     ports:
-      - '8082:80'
-      - '3000:3000'
       - '8080:8080'
-    working_dir: '/var/www/html'
+    working_dir: '/tmp'
+  simplechat-web:
+    container_name: 'simplechat-web'
+    build: ./web
+    environment:
+      - API_URL=http://simplechat-api:8080
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+    depends_on:
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - '3000:3000'
+    working_dir: '/app'
   cassandra:
     container_name: 'cassandra'
     image: cassandra:latest
     ports:
       - '9042:9042'
+    healthcheck:
+      test: ["CMD", "cqlsh", "-u cassandra", "-p cassandra" ,"-e describe keyspaces"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   redis:
     container_name: 'redis'
     image: redis:latest
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   rabbitmq:
     container_name: 'rabbitmq'
     image: rabbitmq:3
     ports:
       - "5672:5672"
+    healthcheck:
+      test: ["CMD", "rabbitmqctl" ,"status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
