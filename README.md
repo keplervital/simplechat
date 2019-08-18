@@ -92,8 +92,7 @@ Include the "frontend/dist/simplechat.prod.js" into your application and begin t
 
 The auth attribute is the auth key of the user.
 
-
-## Example View 
+## Example View
 
 <a href="https://github.com/huonix/simplechat">
   <img src="demo.gif" width="100%" alt="Simplechat" />
