@@ -3,16 +3,16 @@ module.exports = {
         auth: 'API-Key'
     },
     endpoint: {
-        host: 'http://localhost:8080'
+        host: process.env.API_URL || 'http://localhost:8080'
     },
     redis: {
-        host: 'localhost',
-        port: '6379'
+        host: process.env.REDIS_HOST || 'localhost',
+        port: process.env.REDIS_PORT || '6379'
     },
     workQueue: 'simplechat-broker',
     rabbitmq: {
-        host: 'localhost', 
-        port: 5672, 
+        host: process.env.RABBITMQ_HOST || 'localhost', 
+        port: process.env.RABBITMQ_PORT || 5672, 
         login: 'guest', 
         password: 'guest', 
         connectionTimeout: 10000, 
