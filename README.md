@@ -6,11 +6,7 @@ Simple chat was designed with scalability in mind to allow easy integration to a
 
 ## System Design
 
-<p align="center">
- <a href="https://github.com/huonix/simplechat">
-    <img src="system.jpg" alt="System Design" width="100%">
-  </a>
-</p>
+![alt text](https://raw.githubusercontent.com/huonix/simplechat/master/system.jpg "System Design")
 
 ## Prerequisites
 
@@ -63,10 +59,12 @@ To run a simplechat environment on the same server it's really simple.
 
 ```
 $ mvn -f ./app/simplechat clean package
+$ npm --prefix ./frontend run build
 $ docker-compose up
 ```
 
 And it's up the simplechat :)
+The default port is 8082 so if you're on your local machine you should access it on http://localhost:8082
 
 ## Example Usage
 
