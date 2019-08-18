@@ -76,10 +76,10 @@ public class DockerContainer {
 	 * @return void
 	 */
 	public static void removeAll() {
-		removeCassandra();
-		removeRabbitMQ();
-		removeRedis();
-		allowDockerToStopContainers();
+		//removeCassandra();
+		//removeRabbitMQ();
+		//removeRedis();
+		//allowDockerToStopContainers();
 	}
 	
 }
