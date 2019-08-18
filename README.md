@@ -20,51 +20,55 @@ Simple chat was designed with scalability in mind to allow easy integration to a
 
 ## Installation (macOS only)
 
+```bash
+brew cask install docker java8
+brew install node maven docker-compose
 ```
-$ brew cask install docker java8 
-$ brew install node maven docker-compose
-```
+
 (Don't know homebrew? [brew.sh](https://brew.sh/))
 
 ## Development
 
-```
-$ git clone git@github.com:huonix/simplechat.git
-$ cd simplechat
-$ npm install --prefix ./frontend
-$ npm install --prefix ./web
-$ mvn -f ./app/simplechat clean package
-$ npm install -D babel-loader @babel/core @babel/preset-env webpack
+```bash
+git clone git@github.com:huonix/simplechat.git
+cd simplechat
+npm install --prefix ./frontend
+npm install --prefix ./web
+mvn -f ./app/simplechat clean package
+npm install -D babel-loader @babel/core @babel/preset-env webpack
 ```
 
 Running the api server
-```
-$ mvn -f ./app/simplechat clean package
-$ java -jar ./app/simplechat/target/simplechat-0.1.0.jar
+
+```bash
+mvn -f ./app/simplechat clean package
+java -jar ./app/simplechat/target/simplechat-0.1.0.jar
 ```
 
 Running the web(nodejs) server
-```
-$ npm --prefix ./web run dev
+
+```bash
+npm --prefix ./web run dev
 ```
 
 Running the frontend
-```
-$ npm --prefix ./frontend run start
+
+```bash
+npm --prefix ./frontend run start
 ```
 
 ## Running via docker-compose
 
 To run a simplechat environment on the same server it's really simple.
 
-```
-$ mvn -f ./app/simplechat clean package
-$ npm --prefix ./frontend run build
-$ docker-compose up -d
+```bash
+mvn -f ./app/simplechat clean package
+npm --prefix ./frontend run build
+docker-compose up -d
 ```
 
 And it's up the simplechat :)
-The default port is 8082 so if you're on your local machine you should access it on http://localhost:8082
+The default port is 8082 so if you're on your local machine you should access it on `http://localhost:8082`
 
 ## Example Usage
 
@@ -86,8 +90,10 @@ Include the "frontend/dist/simplechat.prod.js" into your application and begin t
 
 The auth attribute is the auth key of the user.
 
-## How can I support the project?
+## How can I support the project'?'
+
 If you have found a bug that hasn't been reported yet or want to request a new feature, please open a new issue.
 
 ## License
+
 Simplechat is open-source licensed under the [MIT License](/LICENSE).
