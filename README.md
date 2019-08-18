@@ -1,10 +1,10 @@
-### Simplechat
+# Simplechat
 
 [![Build Status](http://ec2-52-212-155-80.eu-west-1.compute.amazonaws.com:8080/job/simplechat/job/master/badge/icon)](http://ec2-52-212-155-80.eu-west-1.compute.amazonaws.com:8080/job/simplechat/job/master/)
 
 Simple chat was designed with scalability in mind to allow easy integration to any existing project.
 
-### System
+## System Design
 
 <p align="center">
  <a href="https://github.com/huonix/simplechat">
@@ -12,25 +12,52 @@ Simple chat was designed with scalability in mind to allow easy integration to a
   </a>
 </p>
 
-### Prerequisites
+## Prerequisites
 
 * Java 1.8
 * NodeJS 11+
 * Docker
+* Maven
 * Cassandra 3
 * RabbitMQ 3
 * Redis 5
 
+## Installation (macOS only)
+
+```
+$ brew cask install docker java8 
+$ brew install node maven
+```
+(Don't know homebrew? [brew.sh](https://brew.sh/))
+
 ## Development
 
-### Use homebrew (macOS only)
+```
+$ git clone git@github.com:huonix/simplechat.git
+$ cd simplechat
+$ npm install --prefix ./frontend
+$ npm install --prefix ./web
+$ mvn -f ./app/simplechat clean package
+```
 
-`$ brew cask install docker`
+Running the api server
+```
+mvn -f ./app/simplechat clean package
+java -jar ./app/simplechat/target/simplechat-0.1.0.jar
+```
 
-(Don't know homebrew? [brew.sh](https://brew.sh/))
+Running the web(nodejs) server
+```
+npm --prefix ./web run dev
+```
+
+Running the frontend
+```
+npm --prefix ./frontend run start
+```
 
 ## How can I support the project?
 If you have found a bug that hasn't been reported yet or want to request a new feature, please open a new issue.
 
 ## License
-Simplechat is open-source licensed under the MIT License.
+Simplechat is open-source licensed under the [MIT License](/LICENSE).
