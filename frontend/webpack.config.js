@@ -1,4 +1,5 @@
 const path = require("path");
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: "./src/index.js",
@@ -6,6 +7,9 @@ module.exports = {
   output: {
     filename: "./simplechat.prod.js"
   },
+  plugins: [
+    new Dotenv()
+  ],
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     compress: true,

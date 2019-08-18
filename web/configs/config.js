@@ -13,8 +13,8 @@ module.exports = {
     rabbitmq: {
         host: process.env.RABBITMQ_HOST || 'localhost', 
         port: process.env.RABBITMQ_PORT || 5672, 
-        login: 'guest', 
-        password: 'guest', 
+        login: process.env.RABBITMQ_LOGIN || 'guest', 
+        password: process.env.RABBITMQ_PWD || 'guest', 
         connectionTimeout: 10000, 
         authMechanism: 'AMQPLAIN', 
         vhost: '/', 
