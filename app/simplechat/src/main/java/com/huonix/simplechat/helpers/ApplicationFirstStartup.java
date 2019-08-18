@@ -36,7 +36,8 @@ public class ApplicationFirstStartup {
     	LOGGER.info("##############################################");
     	LOGGER.info("# APPLICATION INITIALIZATION LOGIC");
         if(userService.count() == 0) {
-        	createDefaultUser();
+        	createDefaultRootUser();
+        	createDefaultAdminUser();
         }
         LOGGER.info("##############################################");
     }
@@ -44,11 +45,25 @@ public class ApplicationFirstStartup {
     /**
      * Creates the app default admin user
      */
-    private void createDefaultUser() {
-    	User user = new User(UUIDs.timeBased(), true, environment.getProperty("default.user.name"));
+    private void createDefaultRootUser() {
+    	User user = new User(UUIDs.timeBased(), true, environment.getProperty("simplechat.user.root"));
     	user = userService.add(user);
     	LOGGER.info("##############################################");
-    	LOGGER.info("# SIMPLECHAT DEFAULT USER CREATED");
+    	LOGGER.info("# SIMPLECHAT DEFAULT ROOT USER");
+    	LOGGER.info("# id: " + user.getId());
+    	LOGGER.info("# name: " + user.getName());
+    	LOGGER.info("# apiKey: " + user.getAccessKey());
+    	LOGGER.info("##############################################");
+    }
+    
+    /**
+     * Creates the app default admin user
+     */
+    private void createDefaultAdminUser() {
+    	User user = new User(UUIDs.timeBased(), true, environment.getProperty("simplechat.user.admin"));
+    	user = userService.add(user);
+    	LOGGER.info("##############################################");
+    	LOGGER.info("# SIMPLECHAT DEFAULT ADMIN USER");
     	LOGGER.info("# id: " + user.getId());
     	LOGGER.info("# name: " + user.getName());
     	LOGGER.info("# apiKey: " + user.getAccessKey());
