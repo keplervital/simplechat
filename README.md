@@ -63,7 +63,7 @@ To run a simplechat environment on the same server it's really simple.
 
 ```
 $ mvn -f ./app/simplechat clean package
-$ docker-compose up
+$ docker-compose up -d
 ```
 
 And it's up the simplechat :)
