@@ -8,6 +8,10 @@
     "start": "webpack-dev-server --mode development --open --hot",
     "build": "webpack --mode production"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:huonix/simplechat.git"
+  },
   "keywords": [
     "chat",
     "simplechat",
