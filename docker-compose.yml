@@ -1,6 +1,27 @@
 version: '2'
 
 services:
+  simplechat:
+    container_name: 'simplechat'
+    build: .
+    environment:
+      - API_URL=http://localhost:8080
+      - SOCKET_URL=http://localhost:3000
+      - CASSANDRA_CONTACT_POINTS=cassandra
+      - CASSANDRA_PORT=9042
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+    depends_on:
+      - cassandra
+      - redis
+      - rabbitmq
+    ports:
+      - '8082:80'
+      - '3000:3000'
+      - '8080:8080'
+    working_dir: '/var/www/html'
   cassandra:
     container_name: 'cassandra'
     image: cassandra:latest
