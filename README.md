@@ -1,6 +1,6 @@
 # Simplechat
 
-[![Build Status](http://ec2-52-212-155-80.eu-west-1.compute.amazonaws.com:8080/job/simplechat/job/master/badge/icon)](http://ec2-52-212-155-80.eu-west-1.compute.amazonaws.com:8080/job/simplechat/job/master/)
+[![Build Status](http://ec2-99-81-109-119.eu-west-1.compute.amazonaws.com:8080/job/simplechat/job/master/badge/icon)](http://ec2-99-81-109-119.eu-west-1.compute.amazonaws.com:8080/job/simplechat/job/master/)
 
 Simple chat was designed with scalability in mind to allow easy integration to any existing project.
 
